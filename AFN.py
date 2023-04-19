@@ -5,7 +5,7 @@ def regex_to_enfa(regex_str):
     regex = Regex(regex_str)
     return regex.to_epsilon_nfa()
 
-def enfa_to_graphviz(enfa, mega_start_state=None):
+def enfa_to_graphviz(enfa, identifier=None):
     graph = Digraph("ENFA", format="png")
 
     # Creación de los estados del AFN
@@ -20,7 +20,11 @@ def enfa_to_graphviz(enfa, mega_start_state=None):
     # Creación de los estados finales
     graph.attr("node", shape="doublecircle")
     for final_state in enfa.final_states:
-        graph.node(str(final_state))
+        if identifier is not None:
+            label = f"{final_state} ({identifier})"
+        else:
+            label = str(final_state)
+        graph.node(str(final_state), label=label)
 
     # Creación de las transiciones
     for from_state, to_dict in enfa._transition_function._transitions.items():
@@ -31,7 +35,7 @@ def enfa_to_graphviz(enfa, mega_start_state=None):
     return graph
 
 
-def generate_mega_enfa_graph(enfas):
+def generate_mega_enfa_graph(enfas, identifiers=None):
     mega_graph = Digraph("Combined_ENFA", format="png")
     mega_start_state = "MegaStart"
 
@@ -64,7 +68,11 @@ def generate_mega_enfa_graph(enfas):
         # Creación de los estados finales
         mega_graph.attr("node", shape="doublecircle")
         for final_state in enfa.final_states:
-            mega_graph.node(str(state_mapping[final_state]))
+            if identifiers is not None:
+                label = f"{state_mapping[final_state]} ({identifiers[idx]})"
+            else:
+                label = str(state_mapping[final_state])
+            mega_graph.node(str(state_mapping[final_state]), label=label)
 
         # Conectar el mega estado inicial a los estados iniciales de los ENFA individuales
         for start_state in enfa._start_state:

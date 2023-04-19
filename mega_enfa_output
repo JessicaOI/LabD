@@ -23,7 +23,7 @@ digraph Combined_ENFA {
 	10 -> 6 [label=epsilon]
 	9 -> 10 [label=2]
 	node [shape=doublecircle]
-	2
+	2 [label="2 (numero)"]
 	MegaStart -> 1 [label="ε"]
 	12
 	13
@@ -74,6 +74,6 @@ digraph Combined_ENFA {
 	33 -> 29 [label=epsilon]
 	32 -> 33 [label=C]
 	node [shape=doublecircle]
-	13
+	13 [label="13 (letra)"]
 	MegaStart -> 12 [label="ε"]
 }

@@ -70,3 +70,13 @@ def get_values_list(rewritten_text):
             values_list.append(value)
 
     return values_list
+
+def find_identifier_from_transitions(enfa, categories):
+    for from_state, to_dict in enfa._transition_function._transitions.items():
+        for symbol, to_states in to_dict.items():
+            for to_state in to_states:
+                if to_state in enfa.final_states:
+                    for key, value in categories.items():
+                        if symbol in key:
+                            return value
+    return "Desconocido"
