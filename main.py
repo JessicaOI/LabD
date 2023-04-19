@@ -2,7 +2,7 @@ from funciones import reescribir_archivo, get_values_list
 from AFN import regex_to_enfa, enfa_to_graphviz, generate_mega_enfa_graph
 
 def main():
-    file_name = "Ejemplo1.txt"
+    file_name = "EjemploYalex.txt"
 
     with open(file_name, "r") as file:
         input_text = file.read()
