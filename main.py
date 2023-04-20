@@ -1,34 +1,40 @@
-from funciones import reescribir_archivo, get_values_list
+from funciones import reescribir_archivo, get_values_list, get_variable_names
 from AFN import regex_to_enfa, enfa_to_graphviz, generate_mega_enfa_graph
 
 def main():
-    file_name = "Ejemplo1.txt"
+    yalex_file_name = "EjemploYalex.txt"
+    input_file_name = "archivo_entrada.txt"
 
-    with open(file_name, "r") as file:
+    with open(yalex_file_name, "r") as file:
+        yalex_text = file.read()
+
+    with open(input_file_name, "r") as file:
         input_text = file.read()
 
-    rewritten_text = reescribir_archivo(input_text)
-    
+    rewritten_text = reescribir_archivo(yalex_text)
+
     if rewritten_text is None:
         print("Se detectaron errores en el archivo de entrada. Por favor, corrige los errores e intenta nuevamente.")
         return
 
-    print("Yalex nuevo\n" + rewritten_text)
-
+    variable_names = get_variable_names(rewritten_text)
     resultado = get_values_list(rewritten_text)
-    print("Resultados:")
-    print(resultado)
-    
-    enfas = [regex_to_enfa(regex) for regex in resultado]
-
-# Modificar el diccionario de categorías para tener conjuntos como claves
-    categorias = {
-        '0|1|2': "numero",
-        'a|b|c|A|B|C': "letra"
-    }
-
 
     enfas = [regex_to_enfa(regex) for regex in resultado]
+
+    # Modificar el diccionario de categorías para tener conjuntos como claves
+    # categorias = {
+    #     resultado[0]: "entero",
+    #     resultado[1]: "decimal",
+    #     resultado[2]: "hexadecimal",
+    #     resultado[3]: "operador",
+    #     resultado[4]: "potenciacion",
+    #     resultado[5]: "tabulaciones"
+    # }
+    categorias = {}
+    for i, var_name in enumerate(variable_names):
+        if i < len(resultado):
+            categorias[resultado[i]] = var_name
 
     # Graficar y guardar ENFA individuales con identificadores según categorías
     identifiers = [categorias.get(regex, "Desconocido") for regex in resultado]

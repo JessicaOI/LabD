@@ -10,46 +10,19 @@ digraph ENFA {
 	7
 	8
 	9
-	10
-	11
-	12
-	13
-	14
-	15
-	16
-	17
-	18
-	19
-	20
-	21
 	node [fillcolor=lightblue shape=circle style=filled]
 	"{0}"
 	node [shape=doublecircle]
-	1 [label="1 (letra)"]
+	1 [label="1 (decimal)"]
+	0 -> 8 [label=epsilon]
 	0 -> 2 [label=epsilon]
-	0 -> 4 [label=epsilon]
 	3 -> 1 [label=epsilon]
-	2 -> 3 [label=a]
-	5 -> 1 [label=epsilon]
-	4 -> 8 [label=epsilon]
-	4 -> 6 [label=epsilon]
-	7 -> 5 [label=epsilon]
-	6 -> 7 [label=b]
-	9 -> 5 [label=epsilon]
-	8 -> 10 [label=epsilon]
-	8 -> 12 [label=epsilon]
-	11 -> 9 [label=epsilon]
-	10 -> 11 [label=c]
-	13 -> 9 [label=epsilon]
-	12 -> 16 [label=epsilon]
-	12 -> 14 [label=epsilon]
-	15 -> 13 [label=epsilon]
-	14 -> 15 [label=A]
-	17 -> 13 [label=epsilon]
-	16 -> 18 [label=epsilon]
-	16 -> 20 [label=epsilon]
-	19 -> 17 [label=epsilon]
-	18 -> 19 [label=B]
-	21 -> 17 [label=epsilon]
-	20 -> 21 [label=C]
+	4 -> 5 [label=epsilon]
+	7 -> 4 [label=epsilon]
+	7 -> 6 [label=epsilon]
+	2 -> 4 [label=epsilon]
+	2 -> 6 [label=epsilon]
+	6 -> 7 [label="[0-9]"]
+	5 -> 3 [label=".[0-9]"]
+	9 -> 1 [label=epsilon]
 }

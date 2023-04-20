@@ -80,12 +80,15 @@ def generate_mega_enfa_graph(enfas, identifiers=None):
 
     return mega_graph
 
+
 # def main():
 #     regex_list = [
-#         "0|1|2",
-#         "(0|1|2)((0|1|2))*",
-#         "a|b|c|A|B|C",
-#         "(a|b|c|A|B|C)((a|b|c|A|B|C)|(0|1|2))*"
+#         # "0|1|2",
+#         # "(0|1|2)((0|1|2))*",
+#         # "a|b|c|A|B|C",
+#         # "(a|b|c|A|B|C)((a|b|c|A|B|C)|(0|1|2))*"
+#         "[0-9]+",
+#         "[0-9]*\.[0-9]+"
 #     ]
 
 #     enfas = [regex_to_enfa(regex) for regex in regex_list]

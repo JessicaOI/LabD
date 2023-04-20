@@ -1,9 +1,5 @@
 import re
 
-def validate_let(line):
-    if not line.startswith("let"):
-        return False
-    return True
 
 def validate_parentheses(value):
     count = 0
@@ -17,16 +13,21 @@ def validate_parentheses(value):
     return count == 0
 
 def validate_single_quotes(value):
-    return value.startswith("'") and value.endswith("'")
+    return value.count("'") % 2 == 0
+
+def get_used_variables(input_text):
+    rule_tokens_section = input_text.split("rule tokens =")[1]
+    used_variables = re.findall(r'\b\w+\b', rule_tokens_section)
+    return set(used_variables)
 
 def reescribir_archivo(input_text):
     lines = input_text.split("\n")
     variables = {}
     errors = []
+    used_variables = get_used_variables(input_text)
 
     for line in lines:
-        if not validate_let(line):
-            errors.append(f"Error en la línea: {line}. La línea debe comenzar con 'let'")
+        if not line.startswith("let"):
             continue
         
         var_name, value = line[4:].split(" = ")
@@ -54,10 +55,10 @@ def reescribir_archivo(input_text):
 
     output_lines = []
     for var_name, value in variables.items():
-        output_lines.append(f"let {var_name} = '{value}'")
+        if var_name in used_variables:
+            output_lines.append(f"let {var_name} = '{value}'")
 
     return "\n".join(output_lines)
-
 
 def get_values_list(rewritten_text):
     lines = rewritten_text.split("\n")
@@ -80,3 +81,15 @@ def find_identifier_from_transitions(enfa, categories):
                         if symbol in key:
                             return value
     return "Desconocido"
+
+def get_variable_names(rewritten_text):
+    lines = rewritten_text.split("\n")
+    variable_names = []
+
+    for line in lines:
+        if line.startswith("let"):
+            var_name, _ = line[4:].split(" = ")
+            variable_names.append(var_name.strip())
+
+    return variable_names
+
