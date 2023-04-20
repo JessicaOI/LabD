@@ -1,16 +1,14 @@
-(* Ejemplo básico *)
-
-let delimitador = [' ''\t''\n']
-let espacioEnBlanco = [delimitador+]
-let digito = ['0'-'9']
-let numero = ['-'?digito+]
-let letra = ['a'-'Z''A'-'Z']
-let identificador = [letra(letra|digito)*]
+let entero = [0-9]+
+let decimal = [0-9]*\.[0-'9']+
+let hexadecimal = 0[xX][0-9a-fA-F]+
+let operador = [\+\-\*/]
+let potenciacion = \^
+let tabulaciones = [ \t\n] 
 
 rule tokens =
-	espacioEnBlanco	{}
-  | identificador	{ print("Identificador\n") }
-  | numero			{ print("Número\n") }
-  | '+'				{ print("Operador de suma\n") }
-  | '*'				{ print("Operador de multiplicación\n") }
-  | '='				{ print("Operador de asignación\n") }
+entero                        { printf("Entero: %s\n", yytext); }
+| decimal                     { printf("Decimal: %s\n", yytext); }
+| hexadecimal                 { printf("Hexadecimal: %s\n", yytext); }
+| operador                    { printf("Operador aritmético: %s\n", yytext); }
+| potenciacion                { printf("Operador de potenciación: %s\n", yytext); }
+| tabulaciones                { /* ignorar */ }
