@@ -1,7 +1,7 @@
 import re
 
 entero = r"0|1|2|3|4|5|6|7|8|9"
-decimal = r"(0|1|2|3|4|5|6|7|8|9)\.(0|1|2|3|4|5|6|7|8|9)"
+decimal = r"(0|1|2|3|4|5|6|7|8|9).(0|1|2|3|4|5|6|7|8|9)"
 hexadecimal = r"0[xX][0-9a-fA-F]+"
 operador = r"\+|\-|\*"
 potenciacion = r"\^"
@@ -12,25 +12,24 @@ expresion_total = re.compile(f"({entero}|{decimal}|{hexadecimal}|{operador}|{pot
 print(expresion_total)
 
 # Analizar el archivo de entrada
-archivo_entrada = "10 20.5 0xA1B2 + - * / ^42 3.14 0x12345 * / ^ + -"
+archivo_entrada = "9 8.5 0xA1B2 + - * / ^4 3.1 0x12345 * / ^ + -"
 
 def analizar(entrada):
-    tokens = expresion_total.finditer(entrada)
+    tokens = entrada.split()
     for token in tokens:
-        match = token.group()
-        if re.match(entero, match):
-            print(f"Entero: {match}")
-        elif re.match(decimal, match):
-            print(f"Decimal: {match}")
-        elif re.match(hexadecimal, match):
-            print(f"Hexadecimal: {match}")
-        elif re.match(operador, match):
-            print(f"Operador: {match}")
-        elif re.match(potenciacion, match):
-            print(f"Potenciacion: {match}")
-        elif re.match(tabulaciones, match):
-            print(f"Tabulaciones: {match}")
+        if re.match(entero, token):
+            print(f"Entero: {token}")
+        elif re.match(decimal, token):
+            print(f"Decimal: {token}")
+        elif re.match(hexadecimal, token):
+            print(f"Hexadecimal: {token}")
+        elif re.match(operador, token):
+            print(f"Operador: {token}")
+        elif re.match(potenciacion, token):
+            print(f"Potenciacion: {token}")
+        elif re.match(tabulaciones, token):
+            print(f"Tabulaciones: {token}")
         else:
-            print(f"No reconocido: {match}")
+            print(f"No reconocido: {token}")
 
 analizar(archivo_entrada)
