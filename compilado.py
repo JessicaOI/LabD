@@ -7,13 +7,12 @@ operador = r"\+|\-|\*"
 potenciacion = r"\^"
 tabulaciones = r"\t|\n "
 
-# Compilaciï¿½n de todas las expresiones regulares en una sola expresiï¿½n
+# Compilación de todas las expresiones regulares en una sola expresión
 expresion_total = re.compile(f"({entero}|{decimal}|{hexadecimal}|{operador}|{potenciacion}|{tabulaciones})")
 print(expresion_total)
 
 # Analizar el archivo de entrada
-archivo_entrada = "9 8.5 0xA1B2 + - * / ^4 3.1 0x12345 * / ^ + -"
-
+archivo_entrada = "9 8.5 0xA1B2 + - * / ^ 2 14 3.1 0x12345 * / ^ + - 5 ?"
 def analizar(entrada):
     tokens = entrada.split()
     for token in tokens:
@@ -31,5 +30,6 @@ def analizar(entrada):
             print(f"Tabulaciones: {token}")
         else:
             print(f"No reconocido: {token}")
+
 
 analizar(archivo_entrada)

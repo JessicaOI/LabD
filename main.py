@@ -11,7 +11,6 @@ def main():
     with open(input_file_name, "r") as file:
         input_text = file.read().replace('\n', '')
 
-
     rewritten_text = reescribir_archivo(yalex_text)
 
     if rewritten_text is None:
@@ -23,21 +22,11 @@ def main():
 
     enfas = [regex_to_enfa(regex) for regex in resultado]
 
-    # Modificar el diccionario de categorías para tener conjuntos como claves
-    # categorias = {
-    #     resultado[0]: "entero",
-    #     resultado[1]: "decimal",
-    #     resultado[2]: "hexadecimal",
-    #     resultado[3]: "operador",
-    #     resultado[4]: "potenciacion",
-    #     resultado[5]: "tabulaciones"
-    # }
     categorias = {}
     for i, var_name in enumerate(variable_names):
         if i < len(resultado):
             categorias[resultado[i]] = var_name
 
-    # Graficar y guardar ENFA individuales con identificadores según categorías
     identifiers = [categorias.get(regex, "Desconocido") for regex in resultado]
 
     for idx, enfa in enumerate(enfas):
@@ -45,11 +34,9 @@ def main():
         enfa_graph = enfa_to_graphviz(enfa, identifier)
         enfa_graph.render(f"enfa_output_{idx}", view=True)
 
-    # Generar y guardar el mega autómata con identificadores según categorías
     mega_enfa_graph = generate_mega_enfa_graph(enfas, identifiers)
     mega_enfa_graph.render("mega_enfa_output", view=True)
 
-   # Crear y escribir en el archivo compilado.py
     with open("compilado.py", "w") as compiled_file:
         compiled_file.write("import re\n\n")
 
@@ -64,24 +51,20 @@ def main():
         compiled_file.write("print(expresion_total)\n")
 
         compiled_file.write(f'\n# Analizar el archivo de entrada\narchivo_entrada = "{input_text}"\n')
-        compiled_file.write('''
-def analizar(entrada):
-    tokens = expresion_total.finditer(entrada)
-    for token in tokens:
-        match = token.group()
-''')
-        # La primera condición debe ser "if"
-        compiled_file.write(f"        if re.match({identifiers[0]}, match):\n")
-        compiled_file.write(f"            print(f\"{identifiers[0].capitalize()}: {{match}}\")\n")
+        compiled_file.write("def analizar(entrada):\n")
+        compiled_file.write("    tokens = entrada.split()\n")
+        compiled_file.write("    for token in tokens:\n")
 
-        # El resto de las condiciones deben ser "elif"
-        for var_name in identifiers[1:]:
-            compiled_file.write(f"        elif re.match({var_name}, match):\n")
-            compiled_file.write(f"            print(f\"{var_name.capitalize()}: {{match}}\")\n")
-
+        for i, var_name in enumerate(identifiers):
+            if i == 0:
+                compiled_file.write(f"        if re.match({var_name}, token):\n")
+            else:
+                compiled_file.write(f"        elif re.match({var_name}, token):\n")
+            compiled_file.write(f"            print(f\"{var_name.capitalize()}: {{token}}\")\n")
+            
         compiled_file.write("        else:\n")
-        compiled_file.write("            print(f\"No reconocido: {match}\")\n\n")
-        compiled_file.write("analizar(archivo_entrada)\n")
+        compiled_file.write("            print(f\"Error Sintactico(No reconocido): {token}\")\n")
+        compiled_file.write("\n\nanalizar(archivo_entrada)\n")
 
 if __name__ == "__main__":
     main()
