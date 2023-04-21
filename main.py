@@ -48,7 +48,7 @@ def main():
         compiled_file.write("f\"(")
         compiled_file.write("|".join([f"{{{var_name}}}" for var_name in identifiers]))
         compiled_file.write(")\")\n")
-        compiled_file.write("print(expresion_total)\n")
+        # compiled_file.write("print(expresion_total)\n")
 
         compiled_file.write(f'\n# Analizar el archivo de entrada\narchivo_entrada = "{input_text}"\n')
         compiled_file.write("def analizar(entrada):\n")
